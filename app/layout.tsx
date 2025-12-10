@@ -20,9 +20,13 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Handmade Flowers - Premium Artisan Floral Arrangements",
+  title: "EXORA - Handmade Flowers & Premium Floral Arrangements",
   description:
-    "Discover beautiful handmade flowers crafted with care. Shop our collection of premium artisan floral arrangements.",
+    "Discover beautiful handmade flowers crafted with care. Shop our collection of premium artisan floral arrangements at EXORA.",
+  icons: {
+    icon: [{ url: "/vision_final_logo.svg", type: "image/svg+xml" }],
+    apple: [{ url: "/vision_final_logo.svg", type: "image/svg+xml" }],
+  },
 };
 
 export default function RootLayout({
