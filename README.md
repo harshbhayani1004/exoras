@@ -1,4 +1,140 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Handmade Flowers E-commerce Store
+
+A modern e-commerce store built with Next.js, TypeScript, and Tailwind CSS, with Supabase as the backend.
+
+## Tech Stack
+
+- **Frontend**: Next.js 16 (App Router) + React 19
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS 4
+- **State Management**: Zustand
+- **Backend**: Supabase (PostgreSQL + Storage)
+- **Icons**: Lucide React
+
+## Features
+
+- 🛍️ Product catalog with Supabase backend
+- 🛒 Shopping cart with persistent state
+- 📱 Responsive design
+- 🎨 Modern UI with Tailwind CSS
+- 🖼️ Image storage with Supabase Storage
+- 💾 PostgreSQL database
+- 🔄 Real-time data capabilities
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+- npm or yarn
+- WordPress site with REST API enabled
+
+### Installation
+
+1. Install dependencies:
+
+```bash
+npm install
+```
+
+2. Configure environment variables:
+
+Create a `.env.local` file:
+
+```env
+WORDPRESS_API_URL=https://your-wordpress-site.com/wp-json/wp/v2
+NEXT_PUBLIC_WORDPRESS_API_URL=https://your-wordpress-site.com/wp-json/wp/v2
+```
+
+3. Run the development server:
+
+```bash
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) to see your store.
+
+## Project Structure
+
+```
+my-store/
+├── app/                    # Next.js App Router pages
+│   ├── layout.tsx         # Root layout with Header/Footer
+│   ├── page.tsx           # Homepage
+│   └── products/          # Products pages
+├── src/
+│   ├── components/        # React components
+│   │   ├── Header.tsx
+│   │   ├── Footer.tsx
+│   │   ├── CartButton.tsx
+│   │   └── ProductCard.tsx
+│   ├── lib/              # Utilities and API clients
+│   │   ├── wordpress.ts  # WordPress REST API client
+│   │   └── store.ts      # Zustand cart store
+│   └── types/            # TypeScript type definitions
+│       └── index.ts
+├── next.config.ts        # Next.js configuration
+└── .env.local           # Environment variables
+```
+
+## WordPress Integration
+
+The store fetches data from WordPress REST API. Configure your WordPress site:
+
+1. Install WooCommerce plugin (optional, for products)
+2. Enable REST API (enabled by default)
+3. Configure CORS if needed
+4. Update `WORDPRESS_API_URL` in `.env.local`
+
+## Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
+
+## Image Optimization
+
+The app is configured to handle images from:
+
+- WordPress CDN (animeu087-lvnph.wordpress.com)
+- Cloudinary (res.cloudinary.com)
+- AWS S3 (\*.amazonaws.com)
+
+Add more domains in `next.config.ts` as needed.
+
+## Deployment
+
+### Vercel (Recommended)
+
+1. Push your code to GitHub
+2. Import project in Vercel
+3. Add environment variables
+4. Deploy
+
+### Other Platforms
+
+Build the project:
+
+```bash
+npm run build
+```
+
+Then deploy the `.next` folder to your hosting platform.
+
+## Future Enhancements
+
+- [ ] Product filtering and search with Algolia
+- [ ] User authentication
+- [ ] Checkout and payment integration
+- [ ] Order management
+- [ ] Product reviews
+- [ ] Wishlist functionality
+- [ ] Email notifications
+
+## License
+
+MIT
 
 ## Getting Started
 
