@@ -8,13 +8,8 @@
   package = "@netlify/plugin-nextjs"
 
 [build.environment]
-  NODE_VERSION = "18"
-
-# Redirect rules
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+  NODE_VERSION = "20"
+  NPM_FLAGS = "--legacy-peer-deps"
 
 # Environment variables (set these in Netlify dashboard)
 # NEXT_PUBLIC_SUPABASE_URL = your_supabase_url

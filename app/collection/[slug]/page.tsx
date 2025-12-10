@@ -34,7 +34,12 @@ export default function ProductDetailPage() {
         onAuthRequired={() => setShowAuthModal(true)}
       />
 
-      {showAuthModal && <AuthModal onClose={() => setShowAuthModal(false)} />}
+      {showAuthModal && (
+        <AuthModal
+          isOpen={showAuthModal}
+          onClose={() => setShowAuthModal(false)}
+        />
+      )}
     </>
   );
 }
