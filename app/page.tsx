@@ -59,26 +59,26 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="relative aspect-square bg-gray-800 overflow-hidden">
+            <div className="relative aspect-square bg-gray-800 overflow-hidden rounded-t-3xl">
               <Image
-                src={getImageUrl("photo_2025-12-10_23-57-14.jpg")}
-                alt="Handcrafted flower detail"
+                src={getImageUrl("photo_3_2025-12-11_14-58-13.jpg")}
+                alt="Elegant White Lily arrangement"
                 fill
                 className="object-cover"
               />
             </div>
-            <div className="relative aspect-square bg-gray-800 overflow-hidden">
+            <div className="relative aspect-square bg-gray-800 overflow-hidden rounded-t-3xl">
               <Image
-                src={getImageUrl("photo_2025-12-10_23-57-28.jpg")}
-                alt="Artisan crafting flowers"
+                src={getImageUrl("photo_6_2025-12-11_14-58-13.jpg")}
+                alt="Passionate Red Rose collection"
                 fill
                 className="object-cover"
               />
             </div>
-            <div className="relative aspect-square bg-gray-800 overflow-hidden">
+            <div className="relative aspect-square bg-gray-800 overflow-hidden rounded-t-3xl">
               <Image
-                src={getImageUrl("photo_2025-12-10_23-57-29.jpg")}
-                alt="Beautiful handmade arrangement"
+                src={getImageUrl("photo_7_2025-12-11_14-58-13.jpg")}
+                alt="Sunshine Yellow Dahlia arrangement"
                 fill
                 className="object-cover"
               />
