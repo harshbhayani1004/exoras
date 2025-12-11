@@ -13,7 +13,7 @@ export default function Home() {
             <div className="relative h-[600px] lg:h-[800px] w-full order-2 lg:order-1">
               <div className="absolute inset-0 rounded-t-[20rem] overflow-hidden bg-gray-200">
                 <Image
-                  src={getImageUrl("photo_1_2025-12-10_23-57-59.jpg")}
+                  src={getImageUrl("photo_5_2025-12-11_14-58-13.jpg")}
                   alt="Exquisite Handmade Florals"
                   fill
                   className="object-cover object-top"
