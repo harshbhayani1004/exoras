@@ -97,12 +97,6 @@ export default function Header() {
               >
                 About
               </Link>
-              <Link
-                href="/faq"
-                className="text-gray-700 font-semibold hover:text-black transition-colors"
-              >
-                FAQ
-              </Link>
             </div>
 
             <div className="flex items-center gap-4">
