@@ -8,7 +8,8 @@ A modern e-commerce store built with Next.js, TypeScript, and Tailwind CSS, with
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS 4
 - **State Management**: Zustand
-- **Backend**: Supabase (PostgreSQL + Storage)
+- **Backend**: Supabase (PostgreSQL + Auth)
+- **Storage**: Cloudflare R2
 - **Icons**: Lucide React
 
 ## Features
@@ -17,7 +18,7 @@ A modern e-commerce store built with Next.js, TypeScript, and Tailwind CSS, with
 - 🛒 Shopping cart with persistent state
 - 📱 Responsive design
 - 🎨 Modern UI with Tailwind CSS
-- 🖼️ Image storage with Supabase Storage
+- 🖼️ Image storage with Cloudflare R2
 - 💾 PostgreSQL database
 - 🔄 Real-time data capabilities
 

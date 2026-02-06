@@ -1,4 +1,5 @@
-import { supabase } from "./supabase";
+// Simple localStorage-based authentication (no backend)
+// For production, integrate with a real authentication service like Firebase, Auth0, or NextAuth
 
 export interface User {
   id: number;
@@ -12,58 +13,30 @@ export interface AuthResponse {
   error?: string;
 }
 
-// Google OAuth Sign In
+// Mock Google OAuth Sign In
 export async function signInWithGoogle(): Promise<AuthResponse> {
-  try {
-    // Use HTTPS for production, keep HTTP for localhost dev
-    const origin = window.location.origin;
-    const isLocalhost =
-      origin.includes("localhost") || origin.includes("127.0.0.1");
-    const redirectUrl = isLocalhost
-      ? origin
-      : origin.replace(/^http:/, "https:");
-
-    const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: {
-        redirectTo: redirectUrl, // HTTP for localhost, HTTPS for production
-        skipBrowserRedirect: false,
-      },
-    });
-
-    if (error) {
-      console.error("Google sign in error:", error);
-      return { success: false, error: "Failed to sign in with Google" };
-    }
-
-    return { success: true };
-  } catch (error) {
-    console.error("Google auth error:", error);
-    return { success: false, error: "Google authentication failed" };
-  }
+  // In production, integrate with actual OAuth provider
+  return {
+    success: false,
+    error: "Google OAuth not configured. Please set up authentication service.",
+  };
 }
 
-// Check if user is authenticated via Supabase Auth
+// Check if user is authenticated from localStorage
 export async function checkSupabaseAuth(): Promise<User | null> {
-  try {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+  if (typeof window === "undefined") return null;
 
-    if (user) {
-      return {
-        id: parseInt(user.id) || 0,
-        email: user.email || "",
-        name: user.user_metadata?.name || user.email?.split("@")[0] || "User",
-      };
-    }
-    return null;
+  const userJson = localStorage.getItem("user");
+  if (!userJson) return null;
+
+  try {
+    return JSON.parse(userJson);
   } catch {
     return null;
   }
 }
 
-// Simple hash function for demo (in production, use proper server-side hashing)
+// Simple hash function (for demo only - use proper server-side hashing in production)
 async function simpleHash(password: string): Promise<string> {
   const encoder = new TextEncoder();
   const data = encoder.encode(password);
@@ -72,213 +45,121 @@ async function simpleHash(password: string): Promise<string> {
   return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
+// Register user (localStorage only)
 export async function registerUser(
   email: string,
   password: string,
-  name: string
+  name: string,
 ): Promise<AuthResponse> {
+  if (typeof window === "undefined") {
+    return { success: false, error: "Not in browser environment" };
+  }
+
   try {
     // Check if user already exists
-    const { data: existingUser } = await supabase
-      .from("users")
-      .select("id")
-      .eq("email", email)
-      .single();
+    const usersJson = localStorage.getItem("users");
+    const users = usersJson ? JSON.parse(usersJson) : [];
 
-    if (existingUser) {
+    if (users.some((u: User) => u.email === email)) {
       return { success: false, error: "Email already registered" };
     }
 
-    // Hash password
+    // Create new user
+    const newUser: User = {
+      id: Date.now(),
+      email,
+      name,
+    };
+
+    // Store hashed password separately (never store in user object)
     const passwordHash = await simpleHash(password);
+    const passwords = JSON.parse(localStorage.getItem("passwords") || "{}");
+    passwords[email] = passwordHash;
+    localStorage.setItem("passwords", JSON.stringify(passwords));
 
-    // Insert new user
-    const { data, error } = await supabase
-      .from("users")
-      .insert([{ email, name, password_hash: passwordHash }])
-      .select("id, email, name")
-      .single();
+    // Store user
+    users.push(newUser);
+    localStorage.setItem("users", JSON.stringify(users));
+    localStorage.setItem("user", JSON.stringify(newUser));
 
-    if (error) {
-      console.error("Insert error:", error);
-      console.error("Error details:", JSON.stringify(error, null, 2));
-      return {
-        success: false,
-        error:
-          error.message ||
-          "Failed to create account. Please check if Row Level Security policies allow inserts.",
-      };
-    }
-
-    // Create session
-    await createSession(data.id);
-
-    return { success: true, user: data };
+    return { success: true, user: newUser };
   } catch (error) {
     console.error("Registration error:", error);
     return { success: false, error: "Registration failed" };
   }
 }
 
+// Login user (localStorage only)
 export async function loginUser(
   email: string,
-  password: string
+  password: string,
 ): Promise<AuthResponse> {
+  if (typeof window === "undefined") {
+    return { success: false, error: "Not in browser environment" };
+  }
+
   try {
-    // Hash the provided password
-    const passwordHash = await simpleHash(password);
+    // Get users
+    const usersJson = localStorage.getItem("users");
+    const users: User[] = usersJson ? JSON.parse(usersJson) : [];
 
-    // Get user by email and password hash
-    const { data: user, error } = await supabase
-      .from("users")
-      .select("id, email, name")
-      .eq("email", email)
-      .eq("password_hash", passwordHash)
-      .single();
-
-    if (error || !user) {
+    const user = users.find((u) => u.email === email);
+    if (!user) {
       return { success: false, error: "Invalid email or password" };
     }
 
-    // Create session
-    await createSession(user.id);
+    // Verify password
+    const passwordHash = await simpleHash(password);
+    const passwords = JSON.parse(localStorage.getItem("passwords") || "{}");
 
-    return {
-      success: true,
-      user: { id: user.id, email: user.email, name: user.name },
-    };
+    if (passwords[email] !== passwordHash) {
+      return { success: false, error: "Invalid email or password" };
+    }
+
+    // Set current user
+    localStorage.setItem("user", JSON.stringify(user));
+
+    return { success: true, user };
   } catch (error) {
     console.error("Login error:", error);
     return { success: false, error: "Login failed" };
   }
 }
 
-async function createSession(userId: number): Promise<void> {
-  const sessionToken = generateSessionToken();
-  const expiresAt = new Date();
-  expiresAt.setDate(expiresAt.getDate() + 30); // 30 days
-
-  await supabase.from("user_sessions").insert([
-    {
-      user_id: userId,
-      session_token: sessionToken,
-      expires_at: expiresAt.toISOString(),
-    },
-  ]);
-
-  // Store session token in localStorage
-  if (typeof window !== "undefined") {
-    localStorage.setItem("sessionToken", sessionToken);
-  }
-}
-
-function generateSessionToken(): string {
-  return Math.random().toString(36).substring(2) + Date.now().toString(36);
-}
-
+// Get current user
 export async function getCurrentUser(): Promise<User | null> {
   if (typeof window === "undefined") return null;
 
-  const sessionToken = localStorage.getItem("sessionToken");
-  if (!sessionToken) return null;
+  const userJson = localStorage.getItem("user");
+  if (!userJson) return null;
 
   try {
-    const { data: session } = await supabase
-      .from("user_sessions")
-      .select("user_id, expires_at")
-      .eq("session_token", sessionToken)
-      .single();
-
-    if (!session || new Date(session.expires_at) < new Date()) {
-      localStorage.removeItem("sessionToken");
-      return null;
-    }
-
-    const { data: user } = await supabase
-      .from("users")
-      .select("id, email, name")
-      .eq("id", session.user_id)
-      .single();
-
-    return user;
+    return JSON.parse(userJson);
   } catch {
     return null;
   }
 }
 
-export async function logoutUser(): Promise<void> {
-  if (typeof window === "undefined") return;
-
-  try {
-    // Sign out from Supabase Auth (for Google login users)
-    await supabase.auth.signOut();
-
-    // Remove custom session data
-    const sessionToken = localStorage.getItem("sessionToken");
-    if (sessionToken) {
-      await supabase
-        .from("user_sessions")
-        .delete()
-        .eq("session_token", sessionToken);
-    }
-  } catch (error) {
-    console.error("Logout error:", error);
-  }
-
-  // Clear all auth-related data from localStorage
-  localStorage.removeItem("sessionToken");
-  localStorage.removeItem("user");
-  localStorage.removeItem("cart-storage"); // Clear cart data
-
-  // Clear all localStorage to ensure complete logout
-  localStorage.clear();
-}
-
-export async function resetPassword(
-  email: string
-): Promise<{ success: boolean; error?: string }> {
-  try {
-    // Use HTTPS for production, keep HTTP for localhost dev
-    const origin = window.location.origin;
-    const isLocalhost =
-      origin.includes("localhost") || origin.includes("127.0.0.1");
-    const secureOrigin = isLocalhost
-      ? origin
-      : origin.replace(/^http:/, "https:");
-    const redirectUrl = `${secureOrigin}/reset-password`;
-
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: redirectUrl, // HTTP for localhost, HTTPS for production
-    });
-
-    if (error) {
-      console.error("Password reset error:", error);
-      return { success: false, error: error.message };
-    }
-
-    return { success: true };
-  } catch (error) {
-    console.error("Password reset error:", error);
-    return { success: false, error: "Failed to send reset email" };
+// Logout user
+export async function logout(): Promise<void> {
+  if (typeof window !== "undefined") {
+    localStorage.removeItem("user");
   }
 }
 
-export async function updatePassword(
-  newPassword: string
-): Promise<{ success: boolean; error?: string }> {
-  try {
-    const { error } = await supabase.auth.updateUser({
-      password: newPassword,
-    });
+// Reset password (mock implementation)
+export async function resetPassword(email: string): Promise<AuthResponse> {
+  // In production, send a password reset email via your auth service
+  return {
+    success: false,
+    error:
+      "Password reset not configured. Please set up authentication service.",
+  };
+}
 
-    if (error) {
-      console.error("Password update error:", error);
-      return { success: false, error: error.message };
-    }
-
-    return { success: true };
-  } catch (error) {
-    console.error("Password update error:", error);
-    return { success: false, error: "Failed to update password" };
-  }
+// Generate session token (for compatibility)
+export function generateSessionToken(): string {
+  return Array.from(crypto.getRandomValues(new Uint8Array(32)))
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
 }

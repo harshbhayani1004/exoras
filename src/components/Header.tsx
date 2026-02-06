@@ -1,70 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
-import { supabase } from "@/lib/supabase";
+import { useState } from "react";
 import CartButton from "./CartButton";
 import UserAvatar from "./UserAvatar";
 import AuthModal from "./AuthModal";
 
 export default function Header() {
   const [showAuthModal, setShowAuthModal] = useState(false);
-
-  useEffect(() => {
-    // Handle OAuth callback only on client side
-    const handleAuthCallback = async () => {
-      // Only process if coming from OAuth redirect (has hash)
-      if (typeof window === "undefined" || !window.location.hash) return;
-
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-
-      if (session?.user) {
-        const userData = {
-          id: session.user.id,
-          email: session.user.email || "",
-          name:
-            session.user.user_metadata?.full_name ||
-            session.user.user_metadata?.name ||
-            session.user.email?.split("@")[0] ||
-            "User",
-        };
-        localStorage.setItem("user", JSON.stringify(userData));
-
-        // Clean up the URL hash
-        window.history.replaceState(null, "", window.location.pathname);
-        window.location.reload();
-      }
-    };
-
-    handleAuthCallback();
-
-    // Listen for auth state changes (but don't reload if user already stored)
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (session?.user) {
-        const existingUser = localStorage.getItem("user");
-        if (!existingUser) {
-          // Only save and reload if user wasn't already stored
-          const userData = {
-            id: session.user.id,
-            email: session.user.email || "",
-            name:
-              session.user.user_metadata?.full_name ||
-              session.user.user_metadata?.name ||
-              session.user.email?.split("@")[0] ||
-              "User",
-          };
-          localStorage.setItem("user", JSON.stringify(userData));
-          window.location.reload();
-        }
-      }
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
 
   return (
     <>

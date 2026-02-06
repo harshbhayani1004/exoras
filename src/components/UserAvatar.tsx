@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { User, LogOut } from "lucide-react";
-import { logoutUser } from "@/lib/auth";
+import { logout } from "@/lib/auth";
 
 interface UserAvatarProps {
   onLoginClick: () => void;
@@ -10,7 +10,7 @@ interface UserAvatarProps {
 
 export default function UserAvatar({ onLoginClick }: UserAvatarProps) {
   const [user, setUser] = useState<{ name: string; email: string } | null>(
-    null
+    null,
   );
   const [showMenu, setShowMenu] = useState(false);
 
@@ -26,7 +26,7 @@ export default function UserAvatar({ onLoginClick }: UserAvatarProps) {
   }, []);
 
   const handleLogout = async () => {
-    await logoutUser();
+    await logout();
     setUser(null);
     setShowMenu(false);
     // Redirect to home page after logout

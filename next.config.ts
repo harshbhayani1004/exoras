@@ -5,14 +5,10 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "ysrdptrgpxpdohzgcniy.supabase.co",
-      },
-      {
-        protocol: "https",
-        hostname: "ysrdptrgpxpdohzgcniy.storage.supabase.co",
+        hostname: "pub-2a5d8e5eaff3498da143b1150b20a7c1.r2.dev",
       },
     ],
-    unoptimized: true, // Temporarily disable optimization to bypass private IP check
+    unoptimized: true,
   },
 };
 
