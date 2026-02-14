@@ -157,6 +157,40 @@ export async function resetPassword(email: string): Promise<AuthResponse> {
   };
 }
 
+// Update password (mock implementation for reset flow)
+export async function updatePassword(password: string): Promise<AuthResponse> {
+    if (typeof window === "undefined") {
+        return { success: false, error: "Not in browser environment" };
+    }
+
+    try {
+        // In a real app, this would use the session established by the reset token
+        // For this mock, we'll just update the current user if logged in, 
+        // or return a success message if we're just simulating the flow.
+        
+        // Let's try to update the current user if one exists
+        const userJson = localStorage.getItem("user");
+        if (userJson) {
+            const user = JSON.parse(userJson);
+            const passwordHash = await simpleHash(password);
+            const passwords = JSON.parse(localStorage.getItem("passwords") || "{}");
+            passwords[user.email] = passwordHash;
+            localStorage.setItem("passwords", JSON.stringify(passwords));
+            return { success: true };
+        }
+
+        // If no user is logged in (which is effectively true for the reset flow until token exchange),
+        // we can just return success to simulate the "flow" working for the UI demo.
+        // However, since we can't actually identify WHICH user to update without a real backend token verification,
+        // we'll just return a success mock.
+        return { success: true }; 
+
+    } catch (error) {
+        console.error("Update password error:", error);
+        return { success: false, error: "Failed to update password" };
+    }
+}
+
 // Generate session token (for compatibility)
 export function generateSessionToken(): string {
   return Array.from(crypto.getRandomValues(new Uint8Array(32)))

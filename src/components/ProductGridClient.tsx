@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { memo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useCartStore } from "@/lib/store";
@@ -12,12 +12,11 @@ interface ProductGridClientProps {
   onAuthRequired?: () => void;
 }
 
-export default function ProductGridClient({
+function ProductGridClient({
   products,
   onAuthRequired,
 }: ProductGridClientProps) {
   const addItem = useCartStore((state) => state.addItem);
-  const [hoveredProduct, setHoveredProduct] = useState<number | null>(null);
 
   const handleAddToCart = (e: React.MouseEvent, product: Product) => {
     e.preventDefault();
@@ -26,13 +25,11 @@ export default function ProductGridClient({
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+    <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-10">
       {products.map((product) => (
         <div
           key={product.id}
           className="group relative"
-          onMouseEnter={() => setHoveredProduct(product.id)}
-          onMouseLeave={() => setHoveredProduct(null)}
         >
           {/* Image Container */}
           <div className="block relative aspect-3/4 overflow-hidden bg-gray-100 mb-6">
@@ -45,7 +42,10 @@ export default function ProductGridClient({
                   src={getImageUrl(product.images[0].src)}
                   alt={product.images[0].alt || product.name}
                   fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  className="object-cover transition-transform duration-500 ease-out group-hover:scale-105 will-change-transform"
+                  loading="lazy"
+                  quality={80}
+                  sizes="(max-width: 768px) 50vw, (max-width: 1200px) 50vw, 33vw"
                 />
               ) : (
                 <div className="w-full h-full bg-gray-200 flex items-center justify-center text-gray-400">
@@ -62,13 +62,7 @@ export default function ProductGridClient({
             )}
 
             {/* Action Buttons on Hover */}
-            <div
-              className={`absolute inset-x-0 bottom-0 p-4 bg-white/90 backdrop-blur-sm transition-all duration-300 transform ${
-                hoveredProduct === product.id
-                  ? "translate-y-0 opacity-100"
-                  : "translate-y-full opacity-0"
-              }`}
-            >
+            <div className="absolute inset-x-0 bottom-0 p-4 bg-white/90 backdrop-blur-sm transition-all duration-300 transform translate-y-full opacity-0 group-hover:translate-y-0 group-hover:opacity-100 will-change-transform">
               <div className="flex gap-2">
                 <Link
                   href={`/collection/${product.slug}`}
@@ -111,3 +105,5 @@ export default function ProductGridClient({
     </div>
   );
 }
+
+export default memo(ProductGridClient);

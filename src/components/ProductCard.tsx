@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { memo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import type { Product } from "@/types";
@@ -12,13 +12,12 @@ interface ProductCardProps {
   onAuthRequired?: () => void;
 }
 
-export default function ProductCard({
+function ProductCard({
   product,
   onAuthRequired,
 }: ProductCardProps) {
   const mainImage = product.images[0];
   const addItem = useCartStore((state) => state.addItem);
-  const [isHovered, setIsHovered] = useState(false);
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -27,11 +26,7 @@ export default function ProductCard({
   };
 
   return (
-    <div
-      className="group"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
+    <div className="group">
       <Link href={`/products/${product.slug}`}>
         <div className="relative aspect-3/4 overflow-hidden rounded-lg bg-gray-100">
           {mainImage && (
@@ -39,7 +34,9 @@ export default function ProductCard({
               src={getImageUrl(mainImage.src)}
               alt={mainImage.alt || product.name}
               fill
-              className="object-cover transition-transform duration-300 group-hover:scale-105"
+              className="object-cover transition-transform duration-500 ease-out group-hover:scale-105 will-change-transform"
+              loading="lazy"
+              quality={80}
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
           )}
@@ -50,13 +47,7 @@ export default function ProductCard({
           )}
 
           {/* Add to Cart Button on Hover */}
-          <div
-            className={`absolute inset-x-0 bottom-0 p-4 bg-white/90 backdrop-blur-sm transition-all duration-300 transform ${
-              isHovered
-                ? "translate-y-0 opacity-100"
-                : "translate-y-full opacity-0"
-            }`}
-          >
+          <div className="absolute inset-x-0 bottom-0 p-4 bg-white/90 backdrop-blur-sm transition-all duration-300 transform translate-y-full opacity-0 group-hover:translate-y-0 group-hover:opacity-100 will-change-transform">
             <button
               onClick={handleAddToCart}
               className="w-full bg-dark text-white py-3 text-sm uppercase tracking-wider hover:bg-gray-800 transition-colors"
@@ -94,3 +85,5 @@ export default function ProductCard({
     </div>
   );
 }
+
+export default memo(ProductCard);
