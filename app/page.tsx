@@ -3,6 +3,7 @@ import Image from "next/image";
 import { getImageUrl } from "@/lib/storage";
 import Hero from "@/components/Hero";
 import CraftedCarousel from "@/components/CraftedCarousel";
+import MarqueeTicker from "@/components/MarqueeTicker";
 import { ArrowRight } from "lucide-react";
 
 export default function Home() {
@@ -184,20 +185,7 @@ export default function Home() {
               <h3 className="font-serif text-3xl md:text-4xl mb-2 text-black">Spring Collection</h3>
               <p className="text-black/80 font-medium tracking-wide uppercase text-sm">Limited Edition Arrangements</p>
             </div>
-            <div className="flex-1 w-full md:w-auto overflow-hidden">
-               <div className="whitespace-nowrap animate-marquee flex items-center">
-                  <span className="text-4xl md:text-6xl font-serif text-white/90 italic mx-8">Timeless Elegance</span>
-                  <span className="text-4xl md:text-6xl font-serif text-black/10 mx-8">•</span>
-                  <span className="text-4xl md:text-6xl font-serif text-white/90 italic mx-8">Handcrafted Beauty</span>
-                  <span className="text-4xl md:text-6xl font-serif text-black/10 mx-8">•</span>
-                  <span className="text-4xl md:text-6xl font-serif text-white/90 italic mx-8">Premium Quality</span>
-                  <span className="text-4xl md:text-6xl font-serif text-black/10 mx-8">•</span>
-                  <span className="text-4xl md:text-6xl font-serif text-white/90 italic mx-8">Timeless Elegance</span>
-                  <span className="text-4xl md:text-6xl font-serif text-black/10 mx-8">•</span>
-                  <span className="text-4xl md:text-6xl font-serif text-white/90 italic mx-8">Handcrafted Beauty</span>
-                  <span className="text-4xl md:text-6xl font-serif text-black/10 mx-8">•</span>
-               </div>
-            </div>
+            <MarqueeTicker />
             <div>
                <Link 
                   href="/collection" 

@@ -88,6 +88,12 @@ export default function Header() {
               >
                 About
               </Link>
+              <Link
+                href="/contact"
+                className="text-gray-700 font-semibold hover:text-black transition-colors"
+              >
+                Contact
+              </Link>
             </div>
 
             <div className="flex items-center gap-4">
@@ -146,6 +152,13 @@ export default function Header() {
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   About
+                </Link>
+                <Link
+                  href="/contact"
+                  className="text-gray-800 hover:text-[#CDBA9A] transition-colors font-medium border-b border-gray-100 pb-2"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Contact
                 </Link>
               </div>
             </motion.div>

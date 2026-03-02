@@ -55,17 +55,21 @@ body {
   backface-visibility: hidden;
 }
 
+/* ── Marquee ticker ──────────────────────────────────────────────────────
+   Runs on the compositor thread — zero JS, never affected by main-thread
+   work. translateX(-50%) moves exactly one full set (half of 2× track).
+──────────────────────────────────────────────────────────────────────── */
 @keyframes marquee {
-  0% { 
-    transform: translateX(0) translateZ(0); 
-  }
-  100% { 
-    transform: translateX(-50%) translateZ(0); 
-  }
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
 }
 
-.animate-marquee {
-  animation: marquee 10s linear infinite;
+.marquee-outer {
+  overflow: hidden;
+}
+
+.marquee-track {
+  animation: marquee 22s linear infinite;
   will-change: transform;
 }
 

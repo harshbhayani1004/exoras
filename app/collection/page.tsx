@@ -1,60 +1,44 @@
 "use client";
 
-import { useEffect, useState, memo, useMemo } from "react";
+import { Suspense, useEffect, useState, memo, useMemo, useCallback } from "react";
+import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { getProducts } from "@/lib/api";
 import ProductGridClient from "@/components/ProductGridClient";
 import AuthModal from "@/components/AuthModal";
 import type { Product } from "@/types";
+import { MAIN_GROUPS } from "@/lib/category-data";
 
 import { getImageUrl } from "@/lib/storage";
 
 function CollectionPage() {
+  const searchParams = useSearchParams();
   const [products, setProducts] = useState<Product[]>([]);
   const [showAuthModal, setShowAuthModal] = useState(false);
-  // activeGroup controls the high-level category: 'all', 'crochet', 'pipe-cleaner', 'mobile-case'
-  const [activeGroup, setActiveGroup] = useState("all");
+  const [activeGroup, setActiveGroup] = useState(() => searchParams.get("group") ?? "all");
+
+  // If the URL ?group param changes (e.g. browser back/forward), sync state
+  useEffect(() => {
+    const g = searchParams.get("group");
+    if (g) setActiveGroup(g);
+  }, [searchParams]);
 
   useEffect(() => {
     getProducts().then(setProducts);
   }, []);
 
-  const getProductsByCategory = (slug: string) => {
+  const handleAuthRequired = useCallback(() => {
+    setShowAuthModal(true);
+  }, []);
+
+  const getProductsByCategory = useCallback((slug: string) => {
       return products.filter((p) => p.categories.some((c) => c.slug === slug));
-  };
+  }, [products]);
 
   const scrollToGroup = (groupId: string) => {
     setActiveGroup(groupId);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
-
-  // Define Main Category Groups
-  const MAIN_GROUPS = [
-    {
-      id: "crochet",
-      title: "Crochet",
-      image: "photo_3_2025-12-10_23-57-59.jpg", // Representing Crochet
-      subSections: [
-         { id: "crochet-flowers", title: "Flowers", slug: "crochet-flowers" },
-         { id: "crochet-bouquets", title: "Bouquets", slug: "crochet-bouquets" }
-      ]
-    },
-    {
-      id: "pipe-cleaner",
-      title: "Pipe Cleaner",
-      image: "photo_3_2025-12-11_14-58-13.jpg", // Representing Pipe Cleaner
-      subSections: [
-         { id: "pipe-cleaner-flowers", title: "Flowers", slug: "pipe-cleaner-flowers" },
-         { id: "pipe-cleaner-bouquets", title: "Bouquets", slug: "pipe-cleaner-bouquets" }
-      ]
-    },
-    {
-       id: "mobile-case",
-       title: "Mobile Case",
-       image: null, // Placeholder handled in UI
-       subSections: [] // Special case
-    }
-  ];
 
   const randomProducts = useMemo(() => {
     const shuffled = [...products];
@@ -217,10 +201,10 @@ function CollectionPage() {
         <div className="container mx-auto px-4 py-8 space-y-16 md:space-y-24">
           
           {activeGroup === 'all' ? (
-             <section className="animate-fade-in">
+             <section>
                  <ProductGridClient
                     products={randomProducts}
-                    onAuthRequired={() => setShowAuthModal(true)}
+                    onAuthRequired={handleAuthRequired}
                  />
              </section>
           ) : (
@@ -272,7 +256,7 @@ function CollectionPage() {
                             
                             <ProductGridClient
                               products={sectionProducts}
-                              onAuthRequired={() => setShowAuthModal(true)}
+                              onAuthRequired={handleAuthRequired}
                             />
                           </section>
                        );
@@ -304,4 +288,13 @@ function CollectionPage() {
   );
 }
 
-export default memo(CollectionPage);
+const MemoCollectionPage = memo(CollectionPage);
+
+export default function Page() {
+  return (
+    <Suspense>
+      <MemoCollectionPage />
+    </Suspense>
+  );
+}
+

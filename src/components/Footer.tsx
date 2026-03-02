@@ -77,14 +77,18 @@ export default function Footer() {
               Shop
             </h4>
             <ul className="flex flex-col gap-4">
-              {["All Collections", "New Arrivals", "Best Sellers", "Sale"].map(
-                (item) => (
-                  <li key={item}>
+              {[
+                { label: "All",          href: "/collection" },
+                { label: "Crochet",      href: "/collection?group=crochet" },
+                { label: "Pipe Cleaner", href: "/collection?group=pipe-cleaner" },
+                { label: "Mobile Case",  href: "/collection?group=mobile-case" },
+              ].map((item) => (
+                  <li key={item.label}>
                     <Link
-                      href="/collection"
+                      href={item.href}
                       className="text-lg font-serif text-white/80 hover:text-[#CDBA9A] hover:translate-x-2 transition-all duration-300 inline-block will-change-transform"
                     >
-                      {item}
+                      {item.label}
                     </Link>
                   </li>
                 )
@@ -97,14 +101,18 @@ export default function Footer() {
               Company
             </h4>
             <ul className="flex flex-col gap-4">
-              {["Our Story", "Artisans", "Sustainability", "Contact"].map(
-                (item) => (
-                  <li key={item}>
+              {[
+                { label: "Our Story",      href: "/about" },
+                { label: "Artisans",       href: "/about" },
+                { label: "Sustainability", href: "/about" },
+                { label: "Contact",        href: "/contact" },
+              ].map((item) => (
+                  <li key={item.label}>
                     <Link
-                      href="/about"
+                      href={item.href}
                       className="text-lg font-serif text-white/80 hover:text-[#CDBA9A] hover:translate-x-2 transition-all duration-300 inline-block will-change-transform"
                     >
-                      {item}
+                      {item.label}
                     </Link>
                   </li>
                 )

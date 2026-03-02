@@ -1,6 +1,6 @@
 "use client";
 
-import { memo } from "react";
+import { memo, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useCartStore } from "@/lib/store";
@@ -18,18 +18,27 @@ function ProductGridClient({
 }: ProductGridClientProps) {
   const addItem = useCartStore((state) => state.addItem);
 
-  const handleAddToCart = (e: React.MouseEvent, product: Product) => {
+  const handleAddToCart = useCallback((e: React.MouseEvent, product: Product) => {
     e.preventDefault();
     e.stopPropagation();
     addItem(product, onAuthRequired);
-  };
+  }, [addItem, onAuthRequired]);
+  
+  if (!products || products.length === 0) {
+    return (
+      <div className="w-full text-center py-12 text-gray-500 font-serif">
+        No products found in this category.
+      </div>
+    );
+  }
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-10">
+    <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-10">
       {products.map((product) => (
         <div
           key={product.id}
           className="group relative"
+          style={{ contain: "layout style paint" }}
         >
           {/* Image Container */}
           <div className="block relative aspect-3/4 overflow-hidden bg-gray-100 mb-6">
@@ -42,9 +51,9 @@ function ProductGridClient({
                   src={getImageUrl(product.images[0].src)}
                   alt={product.images[0].alt || product.name}
                   fill
-                  className="object-cover transition-transform duration-500 ease-out group-hover:scale-105 will-change-transform"
+                  className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
                   loading="lazy"
-                  quality={80}
+                  quality={75}
                   sizes="(max-width: 768px) 50vw, (max-width: 1200px) 50vw, 33vw"
                 />
               ) : (
@@ -61,8 +70,8 @@ function ProductGridClient({
               </div>
             )}
 
-            {/* Action Buttons on Hover */}
-            <div className="absolute inset-x-0 bottom-0 p-4 bg-white/90 backdrop-blur-sm transition-all duration-300 transform translate-y-full opacity-0 group-hover:translate-y-0 group-hover:opacity-100 will-change-transform">
+            {/* Action Buttons on Hover — no backdrop-blur (very expensive at scale) */}
+            <div className="absolute inset-x-0 bottom-0 p-4 bg-white/95 transition-transform duration-300 translate-y-full opacity-0 group-hover:translate-y-0 group-hover:opacity-100">
               <div className="flex gap-2">
                 <Link
                   href={`/collection/${product.slug}`}

@@ -1,37 +1,5 @@
-import type { Product, Category } from "@/types";
-
-const CATEGORIES = {
-  CROCHET_FLOWERS: {
-    id: 1,
-    name: "Crochet Flowers",
-    slug: "crochet-flowers",
-    count: 0,
-  } as Category,
-  CROCHET_BOUQUETS: {
-    id: 2,
-    name: "Crochet Bouquets",
-    slug: "crochet-bouquets",
-    count: 0,
-  } as Category,
-  PIPE_CLEANER_FLOWERS: {
-    id: 3,
-    name: "Pipe Cleaner Flowers",
-    slug: "pipe-cleaner-flowers",
-    count: 0,
-  } as Category,
-  PIPE_CLEANER_BOUQUETS: {
-    id: 5,
-    name: "Pipe Cleaner Bouquets",
-    slug: "pipe-cleaner-bouquets",
-    count: 0,
-  } as Category,
-  MOBILE_CASES: {
-    id: 4,
-    name: "Mobile Case",
-    slug: "mobile-case",
-    count: 0,
-  } as Category,
-};
+import type { Product } from "@/types";
+import { CATEGORIES } from "@/lib/category-data";
 
 /**
  * Static product data
