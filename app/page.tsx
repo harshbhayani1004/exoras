@@ -37,7 +37,7 @@ export default function Home() {
                 src={getImageUrl("photo_3_2025-12-11_14-58-13.jpg")}
                 alt="Elegant White Lily arrangement"
                 fill
-                className="object-cover will-change-transform"
+                className="object-cover"
                 loading="lazy"
                 quality={80}
                 sizes="(max-width: 768px) 100vw, 33vw"
@@ -48,7 +48,7 @@ export default function Home() {
                 src={getImageUrl("photo_6_2025-12-11_14-58-13.jpg")}
                 alt="Passionate Red Rose collection"
                 fill
-                className="object-cover will-change-transform"
+                className="object-cover"
                 loading="lazy"
                 quality={80}
                 sizes="(max-width: 768px) 100vw, 33vw"
@@ -59,7 +59,7 @@ export default function Home() {
                 src={getImageUrl("photo_7_2025-12-11_14-58-13.jpg")}
                 alt="Sunshine Yellow Dahlia arrangement"
                 fill
-                className="object-cover will-change-transform"
+                className="object-cover"
                 loading="lazy"
                 quality={80}
                 sizes="(max-width: 768px) 100vw, 33vw"
@@ -82,15 +82,14 @@ export default function Home() {
 
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-8 flex-1 lg:flex-none">
             <div className="group cursor-pointer">
-              <div className="relative aspect-3/4 lg:aspect-[3/4] overflow-hidden bg-gray-100 mb-2 rounded-lg transition-[border-radius] duration-700 ease-in-out group-hover:rounded-[100px] border-none will-change-[border-radius] transform-gpu">
+              <div className="relative aspect-3/4 lg:aspect-[3/4] overflow-hidden bg-gray-100 mb-2 rounded-lg transition-[border-radius] duration-700 ease-in-out group-hover:rounded-[100px] border-none">
                 <Image
                   src={getImageUrl("photo_2025-12-10_23-57-30.jpg")}
                   alt="Flower stems"
                   fill
                   className="object-cover transition-transform duration-700 ease-in-out group-hover:scale-105"
-                  loading="eager"
-                  priority
-                  quality={85}
+                  loading="lazy"
+                  quality={75}
                   sizes="(max-width: 768px) 50vw, 20vw"
                 />
                 <div className="absolute inset-0 flex items-end justify-center p-4 lg:p-8">
@@ -105,13 +104,12 @@ export default function Home() {
             </div>
 
             <div className="group cursor-pointer">
-              <div className="relative aspect-3/4 lg:aspect-[3/4] overflow-hidden bg-gray-100 mb-2 rounded-lg transition-[border-radius] duration-700 ease-in-out group-hover:rounded-[100px] border-none will-change-[border-radius] transform-gpu">
+              <div className="relative aspect-3/4 lg:aspect-[3/4] overflow-hidden bg-gray-100 mb-2 rounded-lg transition-[border-radius] duration-700 ease-in-out group-hover:rounded-[100px] border-none">
                 <Image
                   src={getImageUrl("photo_2025-12-10_23-57-31.jpg")}
                   alt="Bouquets"
-                  loading="eager"
-                  priority
-                  quality={85}
+                  loading="lazy"
+                  quality={75}
                   sizes="(max-width: 768px) 50vw, 20vw"
                   fill
                   className="object-cover transition-transform duration-700 ease-in-out group-hover:scale-105"
@@ -128,7 +126,7 @@ export default function Home() {
             </div>
 
             <div className="group cursor-pointer hidden lg:block">
-              <div className="relative aspect-3/4 lg:aspect-[3/4] overflow-hidden bg-gray-100 mb-2 rounded-lg transition-[border-radius] duration-700 ease-in-out group-hover:rounded-[100px] border-none will-change-[border-radius] transform-gpu">
+              <div className="relative aspect-3/4 lg:aspect-[3/4] overflow-hidden bg-gray-100 mb-2 rounded-lg transition-[border-radius] duration-700 ease-in-out group-hover:rounded-[100px] border-none">
                 <Image
                   src={getImageUrl("photo_2025-12-10_23-57-32.jpg")}
                   alt="All products"
@@ -150,7 +148,7 @@ export default function Home() {
             </div>
 
             <div className="group cursor-pointer hidden lg:block">
-              <div className="relative aspect-3/4 lg:aspect-[3/4] overflow-hidden bg-gray-100 mb-2 rounded-lg transition-[border-radius] duration-700 ease-in-out group-hover:rounded-[100px] border-none will-change-[border-radius] transform-gpu">
+              <div className="relative aspect-3/4 lg:aspect-[3/4] overflow-hidden bg-gray-100 mb-2 rounded-lg transition-[border-radius] duration-700 ease-in-out group-hover:rounded-[100px] border-none">
                 <Image
                   src={getImageUrl("photo_2_2025-12-10_23-57-59.jpg")}
                   alt="Dreamy Blue Peony Vase"

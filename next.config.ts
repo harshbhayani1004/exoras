@@ -1,7 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: "export",
   images: {
     remotePatterns: [
       {
@@ -9,7 +8,9 @@ const nextConfig: NextConfig = {
         hostname: "pub-2a5d8e5eaff3498da143b1150b20a7c1.r2.dev",
       },
     ],
-    unoptimized: true,
+    formats: ["image/avif", "image/webp"],
+    deviceSizes: [390, 640, 828, 1080, 1200, 1920],
+    minimumCacheTTL: 31536000,
   },
 };
 

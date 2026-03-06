@@ -13,7 +13,7 @@ export default function Hero() {
           src="/images/hero.png"
           alt="Handmade Sunflower Arrangement"
           fill
-          className="object-cover object-[83%_center] md:object-[75%_center] lg:object-[50%_30%] opacity-90 will-change-transform"
+          className="object-cover object-[83%_center] md:object-[75%_center] lg:object-[50%_30%] opacity-90"
           priority
           quality={85}
           sizes="100vw"
