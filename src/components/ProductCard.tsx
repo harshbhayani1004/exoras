@@ -47,7 +47,7 @@ function ProductCard({
           )}
 
           {/* Add to Cart Button on Hover */}
-          <div className="absolute inset-x-0 bottom-0 p-4 bg-white/90 backdrop-blur-sm transition-all duration-300 transform translate-y-full opacity-0 group-hover:translate-y-0 group-hover:opacity-100 will-change-transform">
+          <div className="absolute inset-x-0 bottom-0 p-4 bg-white/95 transition-transform duration-300 translate-y-full opacity-0 group-hover:translate-y-0 group-hover:opacity-100 will-change-transform">
             <button
               onClick={handleAddToCart}
               className="w-full bg-dark text-white py-3 text-sm uppercase tracking-wider hover:bg-gray-800 transition-colors"

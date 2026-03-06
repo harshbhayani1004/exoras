@@ -99,15 +99,15 @@ function CollectionPage() {
         </div>
 
         {/* Sticky Filter Navigation */}
-        <div className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm">
+        <div className="sticky top-0 z-30 bg-white border-b border-gray-200">
           <div className="container mx-auto">
             {/* Desktop View: Centered Pills */}
             <div className="hidden lg:flex justify-center space-x-8 py-4">
                <button
                 onClick={() => scrollToGroup("all")}
-                className={`text-sm uppercase tracking-widest font-medium py-2 px-6 rounded-full transition-all duration-300 ${
+                className={`text-sm uppercase tracking-widest font-medium py-2 px-6 rounded-full transition-colors duration-200 ${
                   activeGroup === "all"
-                    ? "bg-dark text-white shadow-md transform scale-105"
+                    ? "bg-dark text-white"
                     : "text-gray-500 hover:text-dark hover:bg-gray-100"
                 }`}
               >
@@ -117,9 +117,9 @@ function CollectionPage() {
                 <button
                   key={group.id}
                   onClick={() => scrollToGroup(group.id)}
-                  className={`text-sm uppercase tracking-widest font-medium py-2 px-6 rounded-full transition-all duration-300 ${
+                  className={`text-sm uppercase tracking-widest font-medium py-2 px-6 rounded-full transition-colors duration-200 ${
                     activeGroup === group.id
-                      ? "bg-dark text-white shadow-md transform scale-105"
+                      ? "bg-dark text-white"
                       : "text-gray-500 hover:text-dark hover:bg-gray-100"
                   }`}
                 >
